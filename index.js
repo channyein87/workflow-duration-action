@@ -1,7 +1,6 @@
 const core = require('@actions/core');
 const github = require('@actions/github')
-
-var duration
+const duration = require('./duration.js')
 
 // action
 async function run() {
@@ -15,7 +14,7 @@ async function run() {
 
     if (github.context.eventName == 'workflow_run') {
 
-      duration = await duration(
+      const duration = await duration(
         github.context.repo.owner,
         github.context.repo.repo,
         github.context.payload.workflow_run.id,
@@ -50,7 +49,7 @@ async function run() {
       //   }
       // }
 
-      duration = await duration(owner, repo, runId, token);
+      const duration = await duration(owner, repo, runId, token);
     }
 
     core.info(`duration: ${duration}`);

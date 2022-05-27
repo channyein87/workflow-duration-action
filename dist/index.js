@@ -1,6 +1,58 @@
 require('./sourcemap-register.js');/******/ (() => { // webpackBootstrap
 /******/ 	var __webpack_modules__ = ({
 
+/***/ 6:
+/***/ ((module, __unused_webpack_exports, __nccwpck_require__) => {
+
+const core = __nccwpck_require__(2186);
+const github = __nccwpck_require__(5438);
+
+async function duration(owner, repo, runId, token) {
+
+  // check token or run id is missing
+  if (!token) {
+    throw new Error('Token is required');
+  }
+
+  // check run id is missing
+  if (!runId) {
+    throw new Error('Run id is required');
+  }
+
+  let create_at = null;
+  let update_at = null;
+  try {
+    const octokit = new github.GitHub(token);
+
+    data = await octokit.request('GET /repos/{owner}/{repo}/actions/runs/{run_id}', {
+      owner: owner,
+      repo: repo,
+      run_id: runId,
+    });
+
+    create_at = JSON.stringify(data.data.create_at, null, 2);
+    update_at = JSON.stringify(data.data.updated_at, null, 2);
+
+    core.info(`create_at: ${create_at}`);
+    core.info(`update_at: ${update_at}`);
+
+    let create_at_date = new Date(create_at);
+    let update_at_date = new Date(update_at);
+    let diff = update_at_date.getTime() - create_at_date.getTime();
+    core.info(`diff: ${diff}`);
+
+    return diff;
+
+  } catch (error) {
+    throw new Error("Failed to get from parent workflow run")
+  }
+}
+
+module.exports = duration;
+
+
+/***/ }),
+
 /***/ 7351:
 /***/ (function(__unused_webpack_module, exports, __nccwpck_require__) {
 
@@ -8862,8 +8914,7 @@ var __webpack_exports__ = {};
 (() => {
 const core = __nccwpck_require__(2186);
 const github = __nccwpck_require__(5438)
-
-var duration
+const duration = __nccwpck_require__(6)
 
 // action
 async function run() {
@@ -8877,7 +8928,7 @@ async function run() {
 
     if (github.context.eventName == 'workflow_run') {
 
-      duration = await duration(
+      const duration = await duration(
         github.context.repo.owner,
         github.context.repo.repo,
         github.context.payload.workflow_run.id,
@@ -8912,7 +8963,7 @@ async function run() {
       //   }
       // }
 
-      duration = await duration(owner, repo, runId, token);
+      const duration = await duration(owner, repo, runId, token);
     }
 
     core.info(`duration: ${duration}`);
