@@ -1,13 +1,12 @@
-name: 'Wait'
-description: 'Wait a designated number of milliseconds'
+name: 'Workflow Duration Action'
+description: 'Action to get the duration seconds of the workflow'
 inputs:
-  milliseconds:  # id of input
-    description: 'number of milliseconds to wait'
-    required: true
-    default: '1000'
+  url:
+    description: 'url of the workflow'
+    required: false
 outputs:
-  time: # output will be available to future steps
-    description: 'The current time after waiting'
+  duration:
+    description: 'duration of the workflow in seconds'
 runs:
   using: 'node16'
   main: 'dist/index.js'
