@@ -39,23 +39,21 @@ function getGithubToken() {
   return token;
 }
 
-// get a workflow run
+// get workflow run by id
 function getWorkflowRun(token, url) {
-  return new Promise((resolve, reject) => {
-    let options = {
+  return new Promise((resolve) => {
+    request({
+      url: url,
       headers: {
         'Authorization': `token ${token}`,
         'Accept': 'application/vnd.github.v3+json'
       }
-    };
-    request.get(url, options, (error, response, body) => {
+    }, function (error, response, body) {
       if (error) {
-        reject(error);
-      } else {
-        // resolve(JSON.parse(body));
-        console.log(body);
-        resolve(body);
+        console.log(error);
+        throw new Error(error);
       }
+      resolve(JSON.parse(body));
     });
   });
 }

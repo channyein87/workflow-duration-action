@@ -4,6 +4,9 @@ inputs:
   url:
     description: 'url of the workflow'
     required: false
+  token:
+    description: 'github token'
+    required: false
 outputs:
   duration:
     description: 'duration of the workflow in seconds'
