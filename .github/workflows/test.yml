@@ -22,4 +22,6 @@ jobs:
     - uses: actions/checkout@v3
     - uses: ./
       with:
-        url: https://api.github.com/repos/channyein87/workflow-duration-action/actions/runs/2395414061
+        owner: channyein87
+        repo: workflow-duration-action
+        run_id: 2395414061

@@ -1,14 +1,17 @@
 const core = require('@actions/core');
-const github = require('@actions/github')
 const duration = require('./duration');
 
 // action
 async function run() {
   try {
 
-    const workflowUrl = getGithubInput();
+    const owner = core.getInput('owner');
+    const repo = core.getInput('repo');
+    const runId = core.getInput('run_id');
 
-    core.info(`Workflow url is ${workflowUrl}`);
+    core.info(`Owner is ${owner}`);
+    core.info(`Owner is ${repo}`);
+    core.info(`Owner is ${runId}`);
 
     core.debug((new Date()).toTimeString());
     await duration(workflowUrl);
@@ -18,15 +21,6 @@ async function run() {
   } catch (error) {
     core.setFailed(error.message);
   }
-}
-
-function getGithubInput() {
-  let input
-  input = core.getInput('url');
-  if (input === 'true') return input;
-  if (input === 'false')
-    input = github.context.payload.event.workflow_run.url
-    return input;
 }
 
 run();

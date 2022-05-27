@@ -1,9 +1,15 @@
 name: 'Workflow Duration Action'
 description: 'Action to get the duration seconds of the workflow'
 inputs:
-  url:
-    description: 'url of the workflow'
-    required: false
+  owner:
+    description: 'owner of the workflow'
+    required: true
+  repo:
+    description: 'repo of the workflow'
+    required: true
+  run_id:
+    description: 'run id of the workflow'
+    required: true
   token:
     description: 'github token'
     required: false

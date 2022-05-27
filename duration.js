@@ -1,14 +1,17 @@
 const core = require('@actions/core');
-const request = require('request');
 
-let duration = function (url) {
-  if (!validURL(url)) {
-    throw new Error('Invalid url');
-  }
+let duration = function (owner, repo, runId) {
   return new Promise((resolve) => {
 
+    // check run id is integer
+    if (isNaN(runId)) {
+      resolve('Invalid run id');
+      return;
+    }
+
     let token = getGithubToken();
-    let workflowRun = getWorkflowRun(token, url);
+
+    const workflowRun = getWorkflowRun();
 
     console.log(workflowRun)
     // let start = workflowRun.created_at;
@@ -19,17 +22,6 @@ let duration = function (url) {
   });
 };
 
-// validate url
-function validURL(str) {
-  var pattern = new RegExp('^(https?:\\/\\/)?'+ // protocol
-    '((([a-z\\d]([a-z\\d-]*[a-z\\d])*)\\.)+[a-z]{2,}|'+ // domain name
-    '((\\d{1,3}\\.){3}\\d{1,3}))'+ // OR ip (v4) address
-    '(\\:\\d+)?(\\/[-a-z\\d%_.~+]*)*'+ // port and path
-    '(\\?[;&a-z\\d%_.~+=-]*)?'+ // query string
-    '(\\#[-a-z\\d_]*)?$','i'); // fragment locator
-  return !!pattern.test(str);
-}
-
 // get github token
 function getGithubToken() {
   let token = core.getInput('token');
@@ -39,24 +31,17 @@ function getGithubToken() {
   return token;
 }
 
-// get workflow run by id
-function getWorkflowRun(token, url) {
-  return new Promise((resolve) => {
-    request({
-      url: url,
-      headers: {
-        'Authorization': `token ${token}`,
-        'Accept': 'application/vnd.github.v3+json',
-        'User-Agent': 'request'
-      }
-    }, function (error, response, body) {
-      if (error) {
-        console.log(error);
-        throw new Error(error);
-      }
-      resolve(JSON.stringify(JSON.parse(body)));
-    });
-  });
+// get workflow run
+function getWorkflowRun() {
+  const octokit = new core({
+    auth: token
+  })
+
+  return octokit.request('GET /repos/{owner}/{repo}/actions/runs/{run_id}', {
+    owner: owner,
+    repo: repo,
+    run_id: runId
+  })
 }
 
 module.exports = duration;
