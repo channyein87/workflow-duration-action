@@ -18,10 +18,14 @@ async function duration(owner, repo, runId, token) {
   try {
     const octokit = new github.GitHub(token);
 
+    core.info(`owner: ${owner}`);
+    core.info(`repo: ${repo}`);
+    core.info(`runId: ${runId}`);
+
     data = await octokit.request('GET /repos/{owner}/{repo}/actions/runs/{run_id}', {
-      owner: owner,
-      repo: repo,
-      run_id: runId,
+      owner,
+      repo,
+      runId,
     });
 
     create_at = JSON.stringify(data.data.create_at, null, 2);

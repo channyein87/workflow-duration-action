@@ -12,8 +12,6 @@ async function run() {
     // const workflow = core.getInput('workflow');
     const runId = core.getInput('run_id');
 
-    console.log(`eventName: ${github.context.eventName}`);
-
     if (github.context.eventName == 'workflow_run') {
 
       const durationTime = await duration(

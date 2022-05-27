@@ -24,10 +24,14 @@ async function duration(owner, repo, runId, token) {
   try {
     const octokit = new github.GitHub(token);
 
+    core.info(`owner: ${owner}`);
+    core.info(`repo: ${repo}`);
+    core.info(`runId: ${runId}`);
+
     data = await octokit.request('GET /repos/{owner}/{repo}/actions/runs/{run_id}', {
-      owner: owner,
-      repo: repo,
-      run_id: runId,
+      owner,
+      repo,
+      runId,
     });
 
     create_at = JSON.stringify(data.data.create_at, null, 2);
@@ -8925,8 +8929,6 @@ async function run() {
     const repo = core.getInput('repo');
     // const workflow = core.getInput('workflow');
     const runId = core.getInput('run_id');
-
-    console.log(`eventName: ${github.context.eventName}`);
 
     if (github.context.eventName == 'workflow_run') {
 
