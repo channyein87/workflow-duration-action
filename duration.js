@@ -10,9 +10,11 @@ let duration = function (url) {
     let token = getGithubToken();
     let workflowRun = getWorkflowRun(token, url);
 
-    let start = workflowRun.created_at;
-    let end = workflowRun.updated_at;
-    let diff = end.getTime() - start.getTime();
+    console.log(workflowRun)
+    // let start = workflowRun.created_at;
+    // let end = workflowRun.updated_at;
+    // let diff = end.getTime() - start.getTime();
+    let diff = 123;
     resolve(diff);
   });
 };
