@@ -15,9 +15,7 @@ let duration = function (owner, repo, runId) {
       return;
     }
 
-    let token = getGithubToken();
-
-    const workflowRun = getWorkflowRun();
+    const workflowRun = getWorkflowRun(owner, repo, runId, getGithubToken());
 
     console.log(workflowRun)
     // let start = workflowRun.created_at;
@@ -38,7 +36,7 @@ function getGithubToken() {
 }
 
 // get workflow run
-function getWorkflowRun() {
+function getWorkflowRun(owner, repo, runId, token) {
   const octokit = new core({
     auth: token
   })
