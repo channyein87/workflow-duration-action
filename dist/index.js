@@ -8928,12 +8928,15 @@ async function run() {
 
     if (github.context.eventName == 'workflow_run') {
 
-      const duration = await duration(
+      const durationTime = await duration(
         github.context.repo.owner,
         github.context.repo.repo,
         github.context.payload.workflow_run.id,
         token
       );
+
+      core.info(`duration: ${durationTime}`);
+      core.setOutput("duration", durationTime);
 
     } else {
 
@@ -8963,11 +8966,11 @@ async function run() {
       //   }
       // }
 
-      const duration = await duration(owner, repo, runId, token);
-    }
+      const durationTime = await duration(owner, repo, runId, token);
 
-    core.info(`duration: ${duration}`);
-    core.setOutput("duration", duration);
+      core.info(`duration: ${durationTime}`);
+      core.setOutput("duration", durationTime);
+    }
   }
   catch (error) {
     core.setFailed(error.message);
