@@ -46,14 +46,15 @@ function getWorkflowRun(token, url) {
       url: url,
       headers: {
         'Authorization': `token ${token}`,
-        'Accept': 'application/vnd.github.v3+json'
+        'Accept': 'application/vnd.github.v3+json',
+        'User-Agent': 'request'
       }
     }, function (error, response, body) {
       if (error) {
         console.log(error);
         throw new Error(error);
       }
-      resolve(JSON.parse(body));
+      resolve(JSON.stringify(JSON.parse(body)));
     });
   });
 }
