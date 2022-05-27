@@ -26,12 +26,13 @@ async function run() {
 
       const client = github.getOctokit(token)
 
-      if ((!workflow) && (!runId)) {
-        core.warning('either workflow or run_id is required')
-        process.exit(0)
-      }
-
       if (!runId) {
+
+        if (!workflow) {
+          core.warning('either workflow or run_id is required')
+          process.exit(1)
+        }
+
         for await (const runs of client.paginate.iterator(client.actions.listWorkflowRuns, {
           owner: owner,
           repo: repo,
