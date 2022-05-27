@@ -7,9 +7,6 @@ inputs:
   repo:
     description: 'repo of the workflow'
     required: false
-  workflow:
-    description: 'workflow name of yaml file'
-    required: false
   run_id:
     description: 'run id of the workflow'
     required: false
