@@ -8863,6 +8863,8 @@ var __webpack_exports__ = {};
 const core = __nccwpck_require__(2186);
 const github = __nccwpck_require__(5438)
 
+var duration
+
 // action
 async function run() {
   try {
@@ -8875,7 +8877,7 @@ async function run() {
 
     if (github.context.eventName == 'workflow_run') {
 
-      const duration = await duration(
+      duration = await duration(
         github.context.repo.owner,
         github.context.repo.repo,
         github.context.payload.workflow_run.id,
@@ -8910,7 +8912,7 @@ async function run() {
       //   }
       // }
 
-      const duration = await duration(owner, repo, runId, token);
+      duration = await duration(owner, repo, runId, token);
     }
 
     core.info(`duration: ${duration}`);
