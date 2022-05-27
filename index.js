@@ -14,7 +14,7 @@ async function run() {
     core.info(`Owner is ${runId}`);
 
     core.debug((new Date()).toTimeString());
-    await duration(workflowUrl);
+    await duration(owner, repo, runId);
     core.info((new Date()).toTimeString());
 
     core.setOutput('duration', duration);
