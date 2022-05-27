@@ -26,7 +26,7 @@ async function run() {
 
       const client = github.getOctokit(token)
 
-      if (!workflow && !runId) {
+      if ((!workflow) && (!runId)) {
         core.warning('either workflow or run_id is required')
         process.exit(0)
       }
