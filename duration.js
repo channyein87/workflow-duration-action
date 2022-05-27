@@ -44,14 +44,17 @@ function getWorkflowRun(token, url) {
   return new Promise((resolve, reject) => {
     let options = {
       headers: {
-        'Authorization': `token ${token}`
+        'Authorization': `token ${token}`,
+        'Accept': 'application/vnd.github.v3+json'
       }
     };
     request.get(url, options, (error, response, body) => {
       if (error) {
         reject(error);
       } else {
-        resolve(JSON.parse(body));
+        // resolve(JSON.parse(body));
+        console.log(body);
+        resolve(body);
       }
     });
   });

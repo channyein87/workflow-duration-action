@@ -16,9 +16,11 @@ let duration = function (url) {
     let token = getGithubToken();
     let workflowRun = getWorkflowRun(token, url);
 
-    let start = workflowRun.created_at;
-    let end = workflowRun.updated_at;
-    let diff = end.getTime() - start.getTime();
+    console.log(workflowRun)
+    // let start = workflowRun.created_at;
+    // let end = workflowRun.updated_at;
+    // let diff = end.getTime() - start.getTime();
+    let diff = 123;
     resolve(diff);
   });
 };
@@ -48,14 +50,17 @@ function getWorkflowRun(token, url) {
   return new Promise((resolve, reject) => {
     let options = {
       headers: {
-        'Authorization': `token ${token}`
+        'Authorization': `token ${token}`,
+        'Accept': 'application/vnd.github.v3+json'
       }
     };
     request.get(url, options, (error, response, body) => {
       if (error) {
         reject(error);
       } else {
-        resolve(JSON.parse(body));
+        // resolve(JSON.parse(body));
+        console.log(body);
+        resolve(body);
       }
     });
   });
