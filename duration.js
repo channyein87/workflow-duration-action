@@ -1,45 +1,45 @@
 const core = require('@actions/core');
+const github = require('@actions/github');
 
-let duration = function (owner, repo, runId) {
-  return new Promise((resolve) => {
+async function duration(owner, repo, runId, token) {
 
-    // check run id is integer
-    if (isNaN(runId)) {
-      resolve('Invalid run id');
-      return;
-    }
+  // check token or run id is missing
+  if (!token) {
+    throw new Error('Token is required');
+  }
 
-    const workflowRun = getWorkflowRun(owner, repo, runId, getGithubToken());
+  // check run id is missing
+  if (!runId) {
+    throw new Error('Run id is required');
+  }
 
-    console.log(workflowRun)
-    // let start = workflowRun.created_at;
-    // let end = workflowRun.updated_at;
-    // let diff = end.getTime() - start.getTime();
-    let diff = 123;
-    resolve(diff);
-  });
-};
+  let create_at = null;
+  let update_at = null;
+  try {
+    const octokit = new github.GitHub(token);
 
-// get github token
-function getGithubToken() {
-  let token = core.getInput('token');
-  if (token === 'true') return token;
-  if (token === 'false')
-    token = process.env.GITHUB_TOKEN;
-  return token;
-}
+    data = await octokit.request('GET /repos/{owner}/{repo}/actions/runs/{run_id}', {
+      owner: owner,
+      repo: repo,
+      run_id: runId,
+    });
 
-// get workflow run
-function getWorkflowRun(owner, repo, runId, token) {
-  const octokit = new core({
-    auth: token
-  })
+    create_at = JSON.stringify(data.data.create_at, null, 2);
+    update_at = JSON.stringify(data.data.updated_at, null, 2);
 
-  return octokit.request('GET /repos/{owner}/{repo}/actions/runs/{run_id}', {
-    owner: owner,
-    repo: repo,
-    run_id: runId
-  })
+    core.info(`create_at: ${create_at}`);
+    core.info(`update_at: ${update_at}`);
+
+    let create_at_date = new Date(create_at);
+    let update_at_date = new Date(update_at);
+    let diff = update_at_date.getTime() - create_at_date.getTime();
+    core.info(`diff: ${diff}`);
+
+    return diff;
+
+  } catch (error) {
+    throw new Error("Failed to get from parent workflow run")
+  }
 }
 
 module.exports = duration;

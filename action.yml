@@ -3,16 +3,19 @@ description: 'Action to get the duration seconds of the workflow'
 inputs:
   owner:
     description: 'owner of the workflow'
-    required: true
+    required: false
   repo:
     description: 'repo of the workflow'
-    required: true
+    required: false
+  workflow:
+    description: 'workflow name of yaml file'
+    required: false
   run_id:
     description: 'run id of the workflow'
-    required: true
+    required: false
   token:
     description: 'github token'
-    required: false
+    required: true
 outputs:
   duration:
     description: 'duration of the workflow in seconds'
