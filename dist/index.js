@@ -8895,26 +8895,26 @@ async function run() {
           process.exit(1)
         }
 
-        for await (const runs of client.paginate.iterator(client.actions.listWorkflowRuns, {
+        let runs = await client.actions.listWorkflowRuns({
           owner: owner,
           repo: repo,
-          workflow_id: workflow,
-          ...(branch ? { branch } : {}),
-        }
-        )) {
-          for (const run of runs.data) {
-            runId = run.id
-            break
-          }
-          if (runId) {
-            break
-          }
+          workflow_id: workflow
+        })
+        for (const run of runs.data) {
+          runId = run.id
+          break
         }
 
-        const duration = await duration(owner, repo, runId, token);
-        core.info(`duration: ${duration}`);
-        core.setOutput("duration", duration);
+        if (runId) {
+          core.info(`runId: ${runId}`)
+        } else {
+          throw new Error("no matching workflow run found")
+        }
       }
+
+      const duration = await duration(owner, repo, runId, token);
+      core.info(`duration: ${duration}`);
+      core.setOutput("duration", duration);
     }
   }
   catch (error) {
