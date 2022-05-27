@@ -18,11 +18,12 @@ async function duration(owner, repo, runId, token) {
   if (!runId) {
     throw new Error('Run id is required');
   }
+  
+  const octokit = new github.GitHub(token);
 
   let create_at = null;
   let update_at = null;
   try {
-    const octokit = new github.GitHub(token);
 
     core.info(`owner: ${owner}`);
     core.info(`repo: ${repo}`);

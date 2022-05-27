@@ -13,14 +13,15 @@ async function duration(owner, repo, runId, token) {
     throw new Error('Run id is required');
   }
 
+  const octokit = new github.GitHub(token);
+
+  core.info(`owner: ${owner}`);
+  core.info(`repo: ${repo}`);
+  core.info(`runId: ${runId}`);
+
   let create_at = null;
   let update_at = null;
   try {
-    const octokit = new github.GitHub(token);
-
-    core.info(`owner: ${owner}`);
-    core.info(`repo: ${repo}`);
-    core.info(`runId: ${runId}`);
 
     data = await octokit.request('GET /repos/{owner}/{repo}/actions/runs/{run_id}', {
       owner,
