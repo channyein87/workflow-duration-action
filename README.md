@@ -47,7 +47,7 @@ jobs:
         uses: channyein87/workflow-duration-action@v1
         id: duration
       - name: Get the output of duration
-        run: echo "The duration is ${{ steps.duration.outputs.duration }} seconds long."
+        run: echo "The units-test workflow is ${{ steps.duration.outputs.duration }} seconds long."
 ```
 
 ## Outputs
