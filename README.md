@@ -37,7 +37,7 @@ The actions isn't required user inputs if it is run in `workflow_run` mode.
 on:
   workflow_run:
     types: [ "completed" ]
-    workflows: [ "..." ]
+    workflows: [ "units-test" ]
 
 jobs:
   hello_world_job:
