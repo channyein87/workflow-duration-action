@@ -1,18 +1,18 @@
 name: 'Workflow Duration Action'
 description: 'Action to get the duration seconds of the workflow'
 inputs:
-  owner:
-    description: 'owner of the workflow'
+  repository:
+    description: 'repository name with owner'
     required: false
-  repo:
-    description: 'repo of the workflow'
-    required: false
+    default: ${{ github.event.workflow_run.head_repository.full_name }}
   run_id:
     description: 'run id of the workflow'
     required: false
-  token:
+    default: ${{ github.event.workflow_run.id }}
+  github_token:
     description: 'github token'
-    required: true
+    required: false
+    default: ${{ github.token }}
 outputs:
   duration:
     description: 'duration of the workflow in seconds'

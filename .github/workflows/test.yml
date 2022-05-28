@@ -22,10 +22,9 @@ jobs:
     - uses: actions/checkout@v3
     - uses: ./
       with:
-        owner: channyein87
-        repo: workflow-duration-action
+        repository: channyein87/workflow-duration-action
         run_id: 2395414061
-        token: ${{ secrets.GITHUB_TOKEN }}
+        github_token: ${{ secrets.GITHUB_TOKEN }}
 
   # # test action works running with workflow
   # test-workflow:

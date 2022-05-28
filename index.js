@@ -1,30 +1,15 @@
-const core = require('@actions/core');
-const github = require('@actions/github')
+const core = require('@actions/core')
+// const github = require('@actions/github')
 const duration = require('./duration.js')
 
 // action
 async function run() {
   try {
 
-    const token = core.getInput("token", { required: true })
-    const owner = core.getInput('owner');
-    const repo = core.getInput('repo');
+    const token = core.getInput('github_token', { required: true })
+    let [owner, repo] = core.getInput('repository').split("/")
     // const workflow = core.getInput('workflow');
-    const runId = core.getInput('run_id');
-
-    if (github.context.eventName == 'workflow_run') {
-
-      const durationTime = await duration(
-        github.context.repo.owner,
-        github.context.repo.repo,
-        github.context.payload.workflow_run.id,
-        token
-      );
-
-      core.info(`duration: ${durationTime}`);
-      core.setOutput("duration", durationTime);
-
-    } else {
+    let runId = core.getInput('run_id');
 
       // const client = github.getOctokit(token)
 
@@ -52,11 +37,16 @@ async function run() {
       //   }
       // }
 
-      const durationTime = await duration(owner, repo, runId, token);
+      // const durationTime = await duration(owner, repo, runId, token);
 
-      core.info(`duration: ${durationTime}`);
-      core.setOutput("duration", durationTime);
-    }
+      // core.info(`duration: ${durationTime}`);
+      // core.setOutput("duration", durationTime);
+    // }
+
+    const durationTime = await duration(owner, repo, runId, token);
+
+    core.info(`duration: ${durationTime}`);
+    core.setOutput("duration", durationTime);
   }
   catch (error) {
     core.setFailed(error.message);

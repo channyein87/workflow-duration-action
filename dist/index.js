@@ -18,32 +18,34 @@ async function duration(owner, repo, runId, token) {
   if (!runId) {
     throw new Error('Run id is required');
   }
-  
-  const octokit = new github.GitHub(token);
 
-  let create_at = null;
-  let update_at = null;
+  core.info(`owner: ${owner}`);
+  core.info(`repo: ${repo}`);
+  core.info(`runId: ${runId}`);
+
   try {
 
-    core.info(`owner: ${owner}`);
-    core.info(`repo: ${repo}`);
-    core.info(`runId: ${runId}`);
+    const octokit = github.getOctokit(token)
 
-    data = await octokit.request('GET /repos/{owner}/{repo}/actions/runs/{run_id}', {
+    const data = await octokit.request('GET /repos/{owner}/{repo}/actions/runs/{run_id}', {
       owner,
       repo,
-      runId,
-    });
+      run_id: runId
+    })
 
-    create_at = JSON.stringify(data.data.create_at, null, 2);
-    update_at = JSON.stringify(data.data.updated_at, null, 2);
+    const created_at = data.data.created_at;
+    const updated_at = data.data.updated_at;
 
-    core.info(`create_at: ${create_at}`);
-    core.info(`update_at: ${update_at}`);
+    // core.debug(`data: ${JSON.stringify(data.data, undefined, 2)}`);
+    core.info(`create_at: ${created_at}`);
+    core.info(`update_at: ${updated_at}`);
 
-    let create_at_date = new Date(create_at);
-    let update_at_date = new Date(update_at);
-    let diff = update_at_date.getTime() - create_at_date.getTime();
+    const created_timestamp = new Date(created_at).getTime() / 1000;
+    const updated_timestamp = new Date(updated_at).getTime() / 1000;
+    core.debug(`created_timestamp: ${created_timestamp}`);
+    core.debug(`updated_timestamp: ${updated_timestamp}`);
+
+    const diff = updated_timestamp - created_timestamp;
     core.info(`diff: ${diff}`);
 
     return diff;
@@ -8917,33 +8919,18 @@ module.exports = JSON.parse('[[[0,44],"disallowed_STD3_valid"],[[45,46],"valid"]
 var __webpack_exports__ = {};
 // This entry need to be wrapped in an IIFE because it need to be isolated against other modules in the chunk.
 (() => {
-const core = __nccwpck_require__(2186);
-const github = __nccwpck_require__(5438)
+const core = __nccwpck_require__(2186)
+// const github = require('@actions/github')
 const duration = __nccwpck_require__(6)
 
 // action
 async function run() {
   try {
 
-    const token = core.getInput("token", { required: true })
-    const owner = core.getInput('owner');
-    const repo = core.getInput('repo');
+    const token = core.getInput('github_token', { required: true })
+    let [owner, repo] = core.getInput('repository').split("/")
     // const workflow = core.getInput('workflow');
-    const runId = core.getInput('run_id');
-
-    if (github.context.eventName == 'workflow_run') {
-
-      const durationTime = await duration(
-        github.context.repo.owner,
-        github.context.repo.repo,
-        github.context.payload.workflow_run.id,
-        token
-      );
-
-      core.info(`duration: ${durationTime}`);
-      core.setOutput("duration", durationTime);
-
-    } else {
+    let runId = core.getInput('run_id');
 
       // const client = github.getOctokit(token)
 
@@ -8971,11 +8958,16 @@ async function run() {
       //   }
       // }
 
-      const durationTime = await duration(owner, repo, runId, token);
+      // const durationTime = await duration(owner, repo, runId, token);
 
-      core.info(`duration: ${durationTime}`);
-      core.setOutput("duration", durationTime);
-    }
+      // core.info(`duration: ${durationTime}`);
+      // core.setOutput("duration", durationTime);
+    // }
+
+    const durationTime = await duration(owner, repo, runId, token);
+
+    core.info(`duration: ${durationTime}`);
+    core.setOutput("duration", durationTime);
   }
   catch (error) {
     core.setFailed(error.message);

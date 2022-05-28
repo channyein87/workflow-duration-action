@@ -1,0 +1,16 @@
+name: "workflow-run"
+
+on:
+  workflow_run:
+    types: [ "completed" ]
+    workflows: [ "units-test" ]
+  
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v3
+    - uses: ./
+      id: duration
+    - name: output
+      run: echo "The duration is ${{ steps.duration.outputs.duration }} seconds long."
