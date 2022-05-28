@@ -1,7 +1,6 @@
 name: 'Workflow Duration Action'
 description: 'Action to get the duration seconds of the workflow'
-icon: clock
-color: gray-dark
+author: 'Chan Nyein Ko Ko'
 inputs:
   repository:
     description: 'repository name with owner'
@@ -21,3 +20,6 @@ outputs:
 runs:
   using: 'node16'
   main: 'dist/index.js'
+branding:
+  icon: 'clock'
+  color: 'gray-dark'
