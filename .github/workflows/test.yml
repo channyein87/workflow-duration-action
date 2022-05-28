@@ -7,13 +7,13 @@ on:
       - 'releases/*'
 
 jobs:
-  # # unit tests
-  # units:
-  #   runs-on: ubuntu-latest
-  #   steps:
-  #   - uses: actions/checkout@v3
-  #   - run: npm ci
-  #   - run: npm test
+  # unit tests
+  units:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v3
+    - run: npm ci
+    - run: npm test
 
   # test action works running with run id
   test-run-id:
@@ -26,14 +26,14 @@ jobs:
         run_id: 2395414061
         github_token: ${{ secrets.GITHUB_TOKEN }}
 
-  # # test action works running with workflow
-  # test-workflow:
-  #   runs-on: ubuntu-latest
-  #   steps:
-  #   - uses: actions/checkout@v3
-  #   - uses: ./
-  #     with:
-  #       owner: channyein87
-  #       repo: workflow-duration-action
-  #       workflow: test.yml
-  #       token: ${{ secrets.GITHUB_TOKEN }}
+  # test action works running with workflow
+  test-workflow:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v3
+    - uses: ./
+      with:
+        owner: channyein87
+        repo: workflow-duration-action
+        workflow: workflow-run.yml
+        token: ${{ secrets.GITHUB_TOKEN }}
