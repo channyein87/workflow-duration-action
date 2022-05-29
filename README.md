@@ -4,7 +4,7 @@
 
 Action to get the duration seconds of the workflow.:alarm_clock:
 
-This action calculate duration between `created_at` and `updated_at` of the [workflow run](https://docs.github.com/en/rest/actions/workflow-runs#get-a-workflow-run).
+This action outputs duration of the workflow in seconds.
 
 ## Usage
 
