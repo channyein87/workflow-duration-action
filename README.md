@@ -26,6 +26,11 @@ The actions isn't required user inputs if it is run in `workflow_run` mode.
     # Default: ${{ github.event.workflow_run.id }}
     run_id: ''
 
+    # Specific workflow instead of parent workflow run
+    # For example, build.yaml
+    # Default: null
+    workflow: ''
+
     # Personal access token (PAT) used to fetch the repository.
     # Default: ${{ github.token }}
     github_token: ''
@@ -40,7 +45,7 @@ on:
     workflows: [ "units-test" ]
 
 jobs:
-  hello_world_job:
+  workflow_duration:
     runs-on: ubuntu-latest
     steps:
       - name: Workflow run duration action
@@ -48,6 +53,33 @@ jobs:
         id: duration
       - name: Get the output of duration
         run: echo "The units-test workflow is ${{ steps.duration.outputs.duration }} seconds long."
+```
+
+### Run with specific workflows
+
+```yaml
+jobs:
+  workflow_durations:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Test workflow duration
+        uses: channyein87/workflow-duration-action@v1
+        id: test
+        with:
+          repository: actions/checkout
+          workflow: test.yml
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+      - name: Check dist workflow duration
+        uses: channyein87/workflow-duration-action@v1
+        id: check-dist
+        with:
+          repository: actions/checkout
+          workflow: check-dist.yml
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+      - name: Get the output of duration
+        run: |
+          echo "The test workflow is ${{ steps.test.outputs.duration }} seconds long."
+          echo "The check dist workflow is ${{ steps.check-dist.outputs.duration }} seconds long."
 ```
 
 ## Outputs
