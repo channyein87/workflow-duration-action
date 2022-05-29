@@ -13,7 +13,7 @@ jobs:
     steps:
     - uses: actions/checkout@v3
     - run: npm ci
-    - run: npm test
+    - run: GITHUB_TOKEN=${{ secrets.GITHUB_TOKEN }} npm test
 
   # test action works running with run id
   test-run-id:
@@ -36,4 +36,4 @@ jobs:
         owner: channyein87
         repo: workflow-duration-action
         workflow: workflow-run.yml
-        token: ${{ secrets.GITHUB_TOKEN }}
+        github_token: ${{ secrets.GITHUB_TOKEN }}

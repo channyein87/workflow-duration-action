@@ -1,6 +1,5 @@
-const core = require('@actions/core')
-const github = require('@actions/github')
-const duration = require('./duration.js')
+const core = require('@actions/core');
+const duration = require('./duration.js');
 
 // action
 async function run() {
@@ -11,32 +10,11 @@ async function run() {
     const workflow = core.getInput('workflow');
     let runId = core.getInput('run_id');
 
-    // find run id if there is workflow input
-    if (workflow) {
+    core.info(`workflow: ${workflow}`);
 
-      const client = github.getOctokit(token)
+    const durationTime = await duration(owner, repo, workflow, runId, token);
 
-      let runs = await client.actions.listWorkflowRuns({
-        owner: owner,
-        repo: repo,
-        workflow_id: workflow
-      })
-      
-      for (const run of runs.data) {
-        runId = run.id
-        break
-      }
-
-      if (runId) {
-        core.info(`runId: ${runId}`)
-      } else {
-        throw new Error("no matching workflow run found")
-      }
-    }
-
-    const durationTime = await duration(owner, repo, runId, token);
-
-    core.info(`duration: ${durationTime}`);
+    core.info(`duration: ${durationTime} seconds`);
     core.setOutput("duration", durationTime);
   }
   catch (error) {

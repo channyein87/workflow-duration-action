@@ -10,6 +10,9 @@ inputs:
     description: 'run id of the workflow'
     required: false
     default: ${{ github.event.workflow_run.id }}
+  workflow:
+    description: 'workflow yaml file'
+    required: false
   github_token:
     description: 'github token'
     required: false
