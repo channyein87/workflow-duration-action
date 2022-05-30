@@ -13,4 +13,9 @@ jobs:
     - uses: ./
       id: duration
     - name: output
-      run: echo "The duration is ${{ steps.duration.outputs.duration }} seconds long."
+      run: |
+        echo "The duration is ${{ steps.duration.outputs.duration }} seconds long."
+        echo "seconds: ${{ steps.duration.outputs.seconds }}"
+        echo "milliseconds: ${{ steps.duration.outputs.milliseconds }}"
+        echo "minutes: ${{ steps.duration.outputs.minutes }}"
+        echo "hours: ${{ steps.duration.outputs.hours }}"
