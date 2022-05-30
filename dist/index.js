@@ -19,7 +19,7 @@ async function duration(owner, repo, workflow, runId, token) {
     // find run id if there is workflow input
     if (workflow) {
 
-      core.info(`custom workflo input: ${workflow}`);
+      core.info(`custom workflow input: ${workflow}`);
 
       let workflowData = await octokit.request('GET /repos/{owner}/{repo}/actions/workflows/{workflow_id}/runs', {
         owner,
@@ -47,9 +47,19 @@ async function duration(owner, repo, workflow, runId, token) {
     core.debug(`run_duration_ms: ${run_duration_ms}`);
 
     const run_duration = run_duration_ms / 1000;
-    core.debug(`run_duration: ${run_duration}`);
+    const run_duration_minutes = run_duration / 60;
+    const run_duration_hours = run_duration_minutes / 60;
 
-    return run_duration;
+    core.debug(`run_duration: ${run_duration}`);
+    core.debug(`run_duration_minutes: ${run_duration_minutes}`);
+    core.debug(`run_duration_hours: ${run_duration_hours}`);
+
+    return {
+      'run_duration': run_duration,
+      'run_duration_ms': run_duration_ms,
+      'run_duration_minutes': run_duration_minutes.toFixed(2),
+      'run_duration_hours': run_duration_hours.toFixed(2)
+    };
 
   } catch (error) {
     throw new Error("Failed to get from parent workflow run")
@@ -8932,12 +8942,17 @@ async function run() {
     const workflow = core.getInput('workflow');
     let runId = core.getInput('run_id');
 
-    core.info(`workflow: ${workflow}`);
-
     const durationTime = await duration(owner, repo, workflow, runId, token);
 
-    core.info(`duration: ${durationTime} seconds`);
-    core.setOutput("duration", durationTime);
+    core.info(`duration: ${durationTime.run_duration} seconds`);
+    core.info(`milliseconds: ${durationTime.run_duration_ms}`);
+    core.info(`minutes: ${durationTime.run_duration_minutes}`);
+    core.info(`hours: ${durationTime.run_duration_hours}`);
+
+    core.setOutput("duration", durationTime.run_duration);
+    core.setOutput("milliseconds", durationTime.run_duration_ms);
+    core.setOutput("minutes", durationTime.run_duration_minutes);
+    core.setOutput("hours", durationTime.run_duration_hours);
   }
   catch (error) {
     core.setFailed(error.message);

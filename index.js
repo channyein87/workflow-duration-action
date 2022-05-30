@@ -10,12 +10,17 @@ async function run() {
     const workflow = core.getInput('workflow');
     let runId = core.getInput('run_id');
 
-    core.info(`workflow: ${workflow}`);
-
     const durationTime = await duration(owner, repo, workflow, runId, token);
 
-    core.info(`duration: ${durationTime} seconds`);
-    core.setOutput("duration", durationTime);
+    core.info(`duration: ${durationTime.run_duration} seconds`);
+    core.info(`milliseconds: ${durationTime.run_duration_ms}`);
+    core.info(`minutes: ${durationTime.run_duration_minutes}`);
+    core.info(`hours: ${durationTime.run_duration_hours}`);
+
+    core.setOutput("duration", durationTime.run_duration);
+    core.setOutput("milliseconds", durationTime.run_duration_ms);
+    core.setOutput("minutes", durationTime.run_duration_minutes);
+    core.setOutput("hours", durationTime.run_duration_hours);
   }
   catch (error) {
     core.setFailed(error.message);
