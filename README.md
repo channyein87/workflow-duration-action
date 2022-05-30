@@ -103,3 +103,13 @@ Duration of the workflow in minutes.
 ### `hours`
 
 Duration of the workflow in hours.
+
+### Sample outputs
+
+```text
+duration: 6m 51s
+seconds: 411
+milliseconds: 411000
+minutes: 6.85
+hours: 0.11
+```
