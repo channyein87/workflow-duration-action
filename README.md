@@ -4,7 +4,7 @@
 
 Action to get the duration seconds of the workflow.:alarm_clock:
 
-This action outputs duration of the workflow in seconds.
+This action outputs duration of the workflow in seconds, milliseconds, minutes and hours.
 
 ## Usage
 
@@ -87,3 +87,19 @@ jobs:
 ### `duration`
 
 Duration of the workflow in seconds.
+
+### `seconds`
+
+Duration of the workflow in seconds.
+
+### `milliseconds`
+
+Duration of the workflow in milliseconds.
+
+### `minutes`
+
+Duration of the workflow in minutes.
+
+### `hours`
+
+Duration of the workflow in hours.

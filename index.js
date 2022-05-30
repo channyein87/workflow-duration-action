@@ -18,6 +18,7 @@ async function run() {
     core.info(`hours: ${durationTime.run_duration_hours}`);
 
     core.setOutput("duration", durationTime.run_duration);
+    core.setOutput("seconds", durationTime.run_duration);
     core.setOutput("milliseconds", durationTime.run_duration_ms);
     core.setOutput("minutes", durationTime.run_duration_minutes);
     core.setOutput("hours", durationTime.run_duration_hours);
