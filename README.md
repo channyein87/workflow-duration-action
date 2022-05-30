@@ -78,15 +78,15 @@ jobs:
           github_token: ${{ secrets.GITHUB_TOKEN }}
       - name: Get the output of duration
         run: |
-          echo "The test workflow is ${{ steps.test.outputs.duration }} seconds long."
-          echo "The check dist workflow is ${{ steps.check-dist.outputs.duration }} seconds long."
+          echo "The test workflow is ${{ steps.test.outputs.duration }} long."
+          echo "The check dist workflow is ${{ steps.check-dist.outputs.duration }} long."
 ```
 
 ## Outputs
 
 ### `duration`
 
-Duration of the workflow in seconds.
+Duration of the workflow in general.
 
 ### `seconds`
 

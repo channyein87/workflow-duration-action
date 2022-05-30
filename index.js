@@ -12,14 +12,14 @@ async function run() {
 
     const durationTime = await duration(owner, repo, workflow, runId, token);
 
-    core.info(`duration: ${durationTime.run_duration} seconds`);
-    core.info(`seconds: ${durationTime.run_duration}`);
+    core.info(`duration: ${durationTime.run_duration}`);
+    core.info(`seconds: ${durationTime.run_duration_seconds}`);
     core.info(`milliseconds: ${durationTime.run_duration_ms}`);
     core.info(`minutes: ${durationTime.run_duration_minutes}`);
     core.info(`hours: ${durationTime.run_duration_hours}`);
 
     core.setOutput("duration", durationTime.run_duration);
-    core.setOutput("seconds", durationTime.run_duration);
+    core.setOutput("seconds", durationTime.run_duration_seconds);
     core.setOutput("milliseconds", durationTime.run_duration_ms);
     core.setOutput("minutes", durationTime.run_duration_minutes);
     core.setOutput("hours", durationTime.run_duration_hours);

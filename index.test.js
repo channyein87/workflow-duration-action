@@ -12,8 +12,8 @@ test('test invalid request', async () => {
 test('test runs', () => {
     const env = {
         ...process.env,
-        'INPUT_REPOSITORY': 'channyein87/workflow-duration-action',
-        'INPUT_RUN_ID': 2397069640,
+        'INPUT_REPOSITORY': 'nektos/act',
+        'INPUT_RUN_ID': 2406365557,
         'INPUT_GITHUB_TOKEN': process.env.GITHUB_TOKEN
     };
     const ip = path.join(__dirname, 'index.js');

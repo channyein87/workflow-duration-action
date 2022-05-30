@@ -40,16 +40,18 @@ async function duration(owner, repo, workflow, runId, token) {
     core.debug(`data: ${JSON.stringify(data.data)}`);
     core.debug(`run_duration_ms: ${run_duration_ms}`);
 
-    const run_duration = run_duration_ms / 1000;
-    const run_duration_minutes = run_duration / 60;
+    const run_duration = timeConversion(run_duration_ms);
+    const run_duration_seconds = run_duration_ms / 1000;
+    const run_duration_minutes = run_duration_seconds / 60;
     const run_duration_hours = run_duration_minutes / 60;
 
-    core.debug(`run_duration: ${run_duration}`);
+    core.debug(`run_duration_seconds: ${run_duration_seconds}`);
     core.debug(`run_duration_minutes: ${run_duration_minutes}`);
     core.debug(`run_duration_hours: ${run_duration_hours}`);
 
     return {
       'run_duration': run_duration,
+      'run_duration_seconds': run_duration_seconds,
       'run_duration_ms': run_duration_ms,
       'run_duration_minutes': run_duration_minutes.toFixed(2),
       'run_duration_hours': run_duration_hours.toFixed(2)
@@ -58,6 +60,27 @@ async function duration(owner, repo, workflow, runId, token) {
   } catch (error) {
     throw new Error("Failed to get from parent workflow run")
   }
+}
+
+function timeConversion(duration) {
+  var portions = [];
+  var msInHour = 1000 * 60 * 60;
+  var hours = Math.trunc(duration / msInHour);
+  if (hours > 0) {
+      portions.push(hours + 'h');
+      duration = duration - (hours * msInHour);
+  }
+  var msInMinute = 1000 * 60;
+  var minutes = Math.trunc(duration / msInMinute);
+  if (minutes > 0) {
+      portions.push(minutes + 'm');
+      duration = duration - (minutes * msInMinute);
+  }
+  var seconds = Math.trunc(duration / 1000);
+  if (seconds > 0) {
+      portions.push(seconds + 's');
+  }
+  return portions.join(' ');
 }
 
 module.exports = duration;
