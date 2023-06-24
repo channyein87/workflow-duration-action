@@ -10,6 +10,9 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v3
+      with:
+        ref: ${{ github.event.workflow_run.head_branch }}
+    - run: git branch
     - uses: ./
       id: duration
     - name: output
