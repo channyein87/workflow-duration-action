@@ -32,7 +32,7 @@
     "request": "^2.88.2"
   },
   "devDependencies": {
-    "@vercel/ncc": "^0.34.0",
+    "@vercel/ncc": "^0.36.1",
     "cp": "^0.2.0",
     "eslint": "^8.0.0",
     "jest": "^25.0.0",
